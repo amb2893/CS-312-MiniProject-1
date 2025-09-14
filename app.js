@@ -26,6 +26,31 @@ app.post('/new-post', (req, res) => {
     res.redirect('/');
 });
 
+
+
+app.get('/edit/:id', (req, res) => {
+    const postId = parseInt(req.params.id);
+    const post = posts.find(p => p.id === postId);
+    if (post) {
+        res.render('edit', { post });
+    } else {
+        res.send('Post not found');
+    }
+});
+
+
+app.post('/edit/:id', (req, res) => {
+    const postId = parseInt(req.params.id);
+    const postIndex = posts.findIndex(p => p.id === postId);
+    if (postIndex > -1) {
+        posts[postIndex].title = req.body.title;
+        posts[postIndex].body = req.body.body;
+        res.redirect('/');
+    } else {
+        res.send('Post not found');
+    }
+});
+
 app.post('/delete/:id', (req, res) => {
     const postId = parseInt(req.params.id);
     posts = posts.filter(p => p.id !== postId);
