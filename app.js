@@ -14,6 +14,24 @@ app.get('/', (req, res) => {
 });
 
 
+app.post('/new-post', (req, res) => {
+    const post = {
+        id: posts.length + 1,
+        name: req.body.name,
+        title: req.body.title,
+        body: req.body.body,
+        time: new Date().toLocaleString(),
+    };
+    posts.push(post);
+    res.redirect('/');
+});
+
+app.post('/delete/:id', (req, res) => {
+    const postId = parseInt(req.params.id);
+    posts = posts.filter(p => p.id !== postId);
+    res.redirect('/');
+});
+
 app.listen(port, () => {
     console.log(`Server running at localhost:${port}`);
 });
