@@ -4,15 +4,16 @@ import bodyParser from 'body-parser';
 const app = express();
 const port = 3000;
 
+
+app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 let posts = [];
 
 app.get('/', (req, res) => {
     res.render('index', { posts });
 });
-
 
 app.post('/new-post', (req, res) => {
     const post = {
@@ -28,35 +29,45 @@ app.post('/new-post', (req, res) => {
 
 
 
+
 app.get('/edit/:id', (req, res) => {
     const postId = parseInt(req.params.id);
     const post = posts.find(p => p.id === postId);
-    if (post) {
+    if (post) 
+    {
         res.render('edit', { post });
-    } else {
+    } 
+    else 
+    {
         res.send('Post not found');
     }
 });
+
 
 
 app.post('/edit/:id', (req, res) => {
     const postId = parseInt(req.params.id);
     const postIndex = posts.findIndex(p => p.id === postId);
-    if (postIndex > -1) {
+    if (postIndex > -1) 
+    {
         posts[postIndex].title = req.body.title;
         posts[postIndex].body = req.body.body;
         res.redirect('/');
-    } else {
+    } 
+    else 
+    {
         res.send('Post not found');
     }
 });
 
-app.post('/delete/:id', (req, res) => {
+app.post('/delete/:id', (req, res) => 
+{
     const postId = parseInt(req.params.id);
     posts = posts.filter(p => p.id !== postId);
     res.redirect('/');
 });
 
-app.listen(port, () => {
-    console.log(`Server running at localhost:${port}`);
+app.listen(port, () => 
+{
+    console.log(`Server running at ${port}`);
 });
